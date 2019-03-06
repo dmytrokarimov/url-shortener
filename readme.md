@@ -1,16 +1,31 @@
-Event-manager provides easy way to exchange messages.
-Endpoints:
-* GET /publisher - returns list with ID of all publishers
-* POST /publisher/register?appId=:appId&exchangeName=:exchangeName - register new publisher. Returns entity with token that should be used for /send
-	{"state":"SUCCESS","body":{"id":"f24a0af2de8-54e27bbfae1-e0dd474a10"}}
-* DELETE /publisher/:id - removes client
+# URL shortener service
 
-* GET /consumer - returns list with ID of all consumers
-* POST /consumer/subscribe?appId=:appId&exchangeName=:exchangeName - subscribe new consumer. Returns entity with token that can be used for /receive
-	{"state":"SUCCESS","body":{"id":"f24a0af2de8-54e27bbfae1-e0dd474a10"}}
-* POST /consumer/subscribe?target=dlq&appId=:appId&exchangeName=:exchangeName - subscribe new consumer to DLQ queue of :exchange and queue :appId. Returns entity with token that can be used for /receive
-	{"state":"SUCCESS","body":{"id":"f24a0af2de8-54e27bbfae1-e0dd474a10"}}
-* DELETE /consumer/:id - removes client
+## How to build
+To build service run command in folder with sources:
+```
+mvn clean install
+```
+after that checks folder `target`: you will see artifact `shortener-0.0.1-SNAPSHOT.jar`
 
-* GET /event/receive/{clientId} - waits until message wont be send
-* POST /event/send/{clientId} - send message to exchange. Body - message bytes
+## Hot to run
+After build `shortener-0.0.1-SNAPSHOT.jar` you can run it using command
+```
+java -jar shortener-0.0.1-SNAPSHOT.jar
+```
+## Endpoints
+### Create new shortlink
+To create new shortlink you need send http request below:
+POST http://localhost:8090/
+Request body
+```
+{
+	"longUrl" : "https://www.google.com"
+}
+```
+`longUrl` contains url that you want to be shortified
+Response:
+```
+http://localhost:8090/aV084
+```
+### Use shortlink
+To use shortlink just copy it to browser and you will be automatically redirected
